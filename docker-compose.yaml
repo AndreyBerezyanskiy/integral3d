@@ -1,0 +1,22 @@
+services:
+  next_training:
+    build: .
+    container_name: next_demo
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    networks:
+      - traefik-servicenet
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.next_demo.rule=Host(`demo.quantum-tech-engineering.com`)'
+      - 'traefik.http.routers.next_demo.entrypoints=websecure'
+      - 'traefik.http.routers.next_demo.tls=true'
+      - "traefik.http.routers.next_demo.middlewares=chain-no-auth@file"
+      - "traefik.http.routers.next_demo.tls.certresolver=letsencrypt"
+
+networks:
+  traefik-servicenet:
+    external: true

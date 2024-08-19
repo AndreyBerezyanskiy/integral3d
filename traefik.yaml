@@ -1,0 +1,47 @@
+version: "3"
+services:
+    traefic:
+        image: "traefik:v2.9"
+        ports:
+            - "127.0.0.1:80:80"
+            - "127.0.0.1:443:443"
+        volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock"
+            # Certificates
+            - "./data/traefic/:/data"
+        command:
+            - "--providers.docker"
+            # Certificates
+            - "--entryPoints.websecure.address=:443"
+            - "--entryPoints.web.address=:80"
+            - "--certificatesResolvers.resolver.acme.email=some_email@gmail.com"
+            - "--certificatesResolvers.resolver.acme.storage=/data/acme.json"
+            - "--certificatesResolvers.resolver.acme.caServer=https://acme-v02.api.letsencrypt.org/directory"
+            - "--certificatesResolvers.resolver.acme.httpchallenge=true"
+            - "--certificatesResolvers.resolver.acme.httpchallenge.entrypoint=web"
+            # Redirects http -> https
+            - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+            - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+            # Dashboard
+            - "--api.dashboard=true"
+        labels:
+            - "traefik.http.routers.dashboard.rule=Host(`traefic.localhost`)"
+            - "traefik.http.routers.dashboard.service=dashboard@internal"
+            - "traefik.http.routers.api.rule=Host(`traefic.localhost`) && PathPrefix(`/api`)"
+            - "traefik.http.routers.api.service=api@internal"
+            - "traefik.http.routers.dashboard.tls=true"
+            - "traefik.http.routers.dashboard.tls.certresolver=resolver"
+            - "traefik.http.routers.api.tls=true"
+            - "traefik.http.routers.api.tls.certresolver=resolver"
+            # Middleware auth
+            - "traefik.http.routers.api.middlewares=auth"
+            - "traefik.http.routers.dashboard.middlewares=auth"
+            # echo $(htpasswd -nB grizzly) | sed -e s/\\$/\\$\\$/g
+            # - "traefik.http.middlewares.auth.basicauth.users=${PASSWD}"
+        networks:
+            - next_training
+
+networks:
+    next_training:
+        name: next_training_default
+        external: true
