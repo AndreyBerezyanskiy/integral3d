@@ -1,9 +1,18 @@
+"use client";
+
+import { Canvas } from "@react-three/fiber";
+import { Scene } from "../components/Scene";
+
 const ScenePage = () => {
   return (
-    <div>
+    <>
       <h1>3D Scene</h1>
-      <div></div>
-    </div>
+      <div className="fixed top-0 left-0 w-full h-full">
+        <Canvas>
+          <Scene />
+        </Canvas>
+      </div>
+    </>
   );
 };
 
