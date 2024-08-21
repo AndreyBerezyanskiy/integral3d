@@ -14,11 +14,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} `}>
-        <AuthProvider>
-          <Header />
-          <main>{children}</main>
-        </AuthProvider>
+      <body suppressHydrationWarning={true} className={`hide-scrollbar ${inter.className} text-white `}>
+        {/* <AuthProvider> */}
+        <Header />
+        <main>{children}</main>
+        {/* </AuthProvider> */}
       </body>
     </html>
   );
