@@ -2,3 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Для WebKit-браузерів, включаючи Chrome та Safari */
+.hide-scrollbar {
+  overflow: auto; /* Залишити прокрутку можливість */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  width: 0; /* Сховати повзунок */
+  height: 0;
+}
+
+.hide-scrollbar::-webkit-scrollbar-thumb {
+  background: transparent; /* Прозорий повзунок */
+}
