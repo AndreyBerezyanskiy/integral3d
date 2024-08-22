@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Greeting } from "./components/Greeting";
 import { RealEstate } from "./components/RealEstate";
 import { OurServices } from "./components/OurServices";
+import { ForeignProject } from "./components/ForeignProject";
 
 export default function HomePage() {
   return (
@@ -9,6 +10,7 @@ export default function HomePage() {
       <Greeting />
       <RealEstate />
       <OurServices />
+      <ForeignProject />
     </div>
   );
 }
