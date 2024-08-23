@@ -1,10 +1,40 @@
+"use client";
+
 import Image from "next/image";
 import { Button } from "./Button";
+import { useEffect, useState } from "react";
+import { animated, useSpring, config } from "@react-spring/web";
+import { useInView } from "react-intersection-observer";
 
 export const RealEstate = () => {
+  const [scrollY, setScrollY] = useState(0);
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const parallaxProps = useSpring({
+    transform: `translate3d(-160px, ${scrollY * 0.1}px, 0)`,
+    config: config.gentle,
+  });
+  const fadeInProps = useSpring({
+    opacity: inView ? 1 : 0,
+    transform: inView ? "translateY(0%)" : "translateY(50px)",
+    config: config.gentle,
+  });
+
   return (
-    <div className="py-default-y pl-default-x grid grid-cols-12 gap-x-30 text-dark-grey">
-      <div className="col-span-3 flex-col gap-4 justify-center">
+    <animated.div style={fadeInProps} ref={ref} className="py-default-y pl-default-x grid grid-cols-12 text-dark-grey">
+      <div className="col-span-3 flex flex-col gap-4 items-start justify-end">
         <p className="text-lg">
           Intergal Group is a top property development company with more than 20 years experience. Our portfolio
           consists of more than 4.6 mln sq m of completed residential and commercial property projects. Intergal Group
@@ -12,14 +42,24 @@ export const RealEstate = () => {
         </p>
         <Button />
       </div>
-      <div className="col-span-9 flex flex-col">
+      <div className="col-start-5 col-end-13 flex flex-col gap-6">
         <h2 className="text-8xl font-bold uppercase text-wrap">
-          Quality real estate <br /> <span className="text-secondary">development in Budapest</span>
+          Quality real estate <br /> <span className="text-secondary text-wrap">development in Budapest</span>
         </h2>
-        <div>
-          <Image className="" src="/images/table_stone.webp" alt="table stone" width={1200} height={1200} />
+        <div className="relative">
+          <animated.div style={parallaxProps} className="absolute">
+            <Image
+              src={
+                "https://quadroom.fra1.cdn.digitaloceanspaces.com/intergal-group/decor1-1ca4873a-7fb1-4407-8638-86c57c680bf7.webp"
+              }
+              alt="defense"
+              width={400}
+              height={400}
+            />
+          </animated.div>
+          <Image className="w-full" src="/images/table_stone.webp" alt="table stone" width={1200} height={1200} />
         </div>
       </div>
-    </div>
+    </animated.div>
   );
 };
