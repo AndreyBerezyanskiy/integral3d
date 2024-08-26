@@ -5,19 +5,25 @@ import React, { useState } from 'react';
 const ImageViewer = ({ images }: { images: string[] }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [startX, setStartX] = useState<number | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   if (images.length === 0) {
     return <div>No images available</div>;
   }
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    setStartX(e.clientX);
+    if (e.button === 0) {
+      setStartX(e.clientX);
+      setIsDragging(true);
+    }
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (startX !== null) {
+    if (isDragging && startX !== null) {
       const diffX = e.clientX - startX;
-      if (Math.abs(diffX) > 5) {
+      const threshold = 50;
+
+      if (Math.abs(diffX) > threshold) {
         setCurrentImageIndex((prevIndex) => 
           (prevIndex + (diffX > 0 ? 1 : -1) + images.length) % images.length
         );
@@ -28,6 +34,7 @@ const ImageViewer = ({ images }: { images: string[] }) => {
 
   const handleMouseUp = () => {
     setStartX(null);
+    setIsDragging(false);
   };
 
   return (
@@ -37,7 +44,7 @@ const ImageViewer = ({ images }: { images: string[] }) => {
       onMouseUp={handleMouseUp}
       style={{ cursor: 'grab', userSelect: 'none' }}
     >
-      <img src={images[currentImageIndex]} alt="Product view" />
+      <img src={images[currentImageIndex]} alt="Product view" draggable={false}/>
     </div>
   );
 };
