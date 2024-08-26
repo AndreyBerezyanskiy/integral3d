@@ -87,7 +87,6 @@ const ImageViewer = ({ images }: { images: string[] }) => {
           alt="Product view"
           draggable={false}
           className='w-screen max-h-screen'
-        // style={{ maxWidth: '100%', maxHeight: '500px' }}
         />
       </div>
 
