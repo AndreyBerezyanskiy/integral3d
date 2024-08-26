@@ -1,8 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { Button } from "./Button";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { animated, useSpring, config } from "@react-spring/web";
 import { useInView } from "react-intersection-observer";
 
