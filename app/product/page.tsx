@@ -21,11 +21,24 @@ const ImageViewer = ({ images }: { images: string[] }) => {
   const handleMouseMove = (e: React.MouseEvent) => {
     if (isDragging && startX !== null) {
       const diffX = e.clientX - startX;
-      const threshold = 50;
+      const threshold = 30;
 
       if (Math.abs(diffX) > threshold) {
-        setCurrentImageIndex((prevIndex) => 
-          (prevIndex + (diffX > 0 ? 1 : -1) + images.length) % images.length
+        setCurrentImageIndex((prevIndex) => {
+          const newIndex = prevIndex + (diffX > 0 ? 1 : -1);
+
+          // Ensure newIndex stays within the bounds [0, images.length - 1]
+          let result = 0;
+          if (newIndex >= images.length) {
+            result = 0; // Wrap around to the first image
+          } else if (newIndex < 0) {
+            result = images.length - 1; // Wrap around to the last image
+          } else {
+            result = newIndex; // Normal index within bounds
+          }
+          console.log(result);
+          return result;
+        }
         );
         setStartX(e.clientX);
       }
@@ -44,31 +57,31 @@ const ImageViewer = ({ images }: { images: string[] }) => {
       onMouseUp={handleMouseUp}
       style={{ cursor: 'grab', userSelect: 'none' }}
     >
-      <img src={images[currentImageIndex]} alt="Product view" draggable={false}/>
+      <img src={images[currentImageIndex]} alt="Product view" draggable={false} />
     </div>
   );
 };
 
 const Page = () => {
   const images = [
-    '/images/model/2024-08-24_17-15-44.png',
-    '/images/model/2024-08-24_17-23-50.png',
-    '/images/model/2024-08-24_17-17-52.png',
-    '/images/model/2024-08-24_17-11-55.png',
-    '/images/model/2024-08-24_17-26-39.png',
-    '/images/model/2024-08-24_17-10-09.png',
-    '/images/model/2024-08-24_17-16-55.png',
-    '/images/model/2024-08-24_17-24-35.png',
-    '/images/model/2024-08-24_17-09-12.png',
-    '/images/model/2024-08-24_17-18-56.png',
-    '/images/model/2024-08-24_17-11-01.png',
-    '/images/model/2024-08-24_17-07-59.png',
-    '/images/model/2024-08-24_17-14-25.png',
     '/images/model/2024-08-24_17-01-16.png',
     '/images/model/2024-08-24_17-04-33.png',
-    '/images/model/2024-08-24_17-12-43.png',
     '/images/model/2024-08-24_17-05-59.png',
-    '/images/model/2024-08-24_17-25-29.png'
+    '/images/model/2024-08-24_17-07-59.png',
+    '/images/model/2024-08-24_17-09-12.png',
+    '/images/model/2024-08-24_17-10-09.png',
+    '/images/model/2024-08-24_17-11-01.png',
+    '/images/model/2024-08-24_17-11-55.png',
+    '/images/model/2024-08-24_17-12-43.png',
+    '/images/model/2024-08-24_17-14-25.png',
+    '/images/model/2024-08-24_17-15-44.png',
+    '/images/model/2024-08-24_17-16-55.png',
+    '/images/model/2024-08-24_17-17-52.png',
+    '/images/model/2024-08-24_17-18-56.png',
+    '/images/model/2024-08-24_17-23-50.png',
+    '/images/model/2024-08-24_17-25-29.png',
+    '/images/model/2024-08-24_17-24-35.png',
+    '/images/model/2024-08-24_17-26-39.png'
   ];
 
   return (
