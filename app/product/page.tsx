@@ -27,14 +27,13 @@ const ImageViewer = ({ images }: { images: string[] }) => {
         setCurrentImageIndex((prevIndex) => {
           const newIndex = prevIndex + (diffX > 0 ? 1 : -1);
 
-          // Ensure newIndex stays within the bounds [0, images.length - 1]
           let result = 0;
           if (newIndex >= images.length) {
-            result = 0; // Wrap around to the first image
+            result = 0;
           } else if (newIndex < 0) {
-            result = images.length - 1; // Wrap around to the last image
+            result = images.length - 1;
           } else {
-            result = newIndex; // Normal index within bounds
+            result = newIndex;
           }
           console.log(result);
           return result;
@@ -50,14 +49,54 @@ const ImageViewer = ({ images }: { images: string[] }) => {
     setIsDragging(false);
   };
 
+  const handleNext = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
+  const handlePrevious = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  };
+
   return (
     <div
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      style={{ cursor: 'grab', userSelect: 'none' }}
+      style={{
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        userSelect: 'none',
+      }}
     >
-      <img src={images[currentImageIndex]} alt="Product view" draggable={false} />
+      <button
+        onClick={handlePrevious}
+        className='absolute left-1 w-10 h-10 bg-black text-white p-2 rounded-full cursor-pointer z-20 opacity-50'
+      >
+        &#9664;
+      </button>
+
+      <div
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        style={{ cursor: 'grab' }}
+      >
+        <img
+          src={images[currentImageIndex]}
+          alt="Product view"
+          draggable={false}
+          className='w-screen max-h-screen'
+        // style={{ maxWidth: '100%', maxHeight: '500px' }}
+        />
+      </div>
+
+      <button
+        onClick={handleNext}
+        className='absolute right-1 w-10 h-10 bg-black text-white p-2 rounded-full cursor-pointer z-20 opacity-50'
+      >
+        &#9654;
+      </button>
     </div>
   );
 };
