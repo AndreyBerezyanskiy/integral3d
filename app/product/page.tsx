@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const ImageViewer = ({ images }: { images: string[] }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [startX, setStartX] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   if (images.length === 0) {
     return <div>No images available</div>;
@@ -25,7 +26,7 @@ const ImageViewer = ({ images }: { images: string[] }) => {
 
       if (Math.abs(diffX) > threshold) {
         setCurrentImageIndex((prevIndex) => {
-          const newIndex = prevIndex + (diffX > 0 ? 1 : -1);
+          const newIndex = prevIndex + (diffX > 0 ? -1 : 1); // зміна напрямку при свайпі
 
           let result = 0;
           if (newIndex >= images.length) {
@@ -35,10 +36,9 @@ const ImageViewer = ({ images }: { images: string[] }) => {
           } else {
             result = newIndex;
           }
-          console.log(result);
+          setIsAnimating(true); // Починаємо анімацію
           return result;
-        }
-        );
+        });
         setStartX(e.clientX);
       }
     }
@@ -50,14 +50,23 @@ const ImageViewer = ({ images }: { images: string[] }) => {
   };
 
   const handleNext = () => {
+    setIsAnimating(true); // Починаємо анімацію
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
   };
 
   const handlePrevious = () => {
+    setIsAnimating(true); // Починаємо анімацію
     setCurrentImageIndex((prevIndex) =>
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
   };
+
+  // Завершення анімації після того, як зображення змінене
+  useEffect(() => {
+    if (isAnimating) {
+      setTimeout(() => setIsAnimating(false), 300); // Очікуємо на анімацію 300ms
+    }
+  }, [currentImageIndex, isAnimating]);
 
   return (
     <div
@@ -80,13 +89,16 @@ const ImageViewer = ({ images }: { images: string[] }) => {
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
-        style={{ cursor: 'grab' }}
+        style={{
+          cursor: 'grab',
+          transition: isAnimating ? 'transform 0.3s ease-in-out' : 'none', // додаємо анімацію
+        }}
       >
         <img
           src={images[currentImageIndex]}
           alt="Product view"
           draggable={false}
-          className='w-screen max-h-screen'
+          className={`w-screen max-h-screen ${isAnimating ? 'animate-slide' : ''}`} // Додаємо клас для анімації
         />
       </div>
 
@@ -101,26 +113,7 @@ const ImageViewer = ({ images }: { images: string[] }) => {
 };
 
 const Page = () => {
-  const images = [
-    '/images/model/2024-08-24_17-01-16.png',
-    '/images/model/2024-08-24_17-04-33.png',
-    '/images/model/2024-08-24_17-05-59.png',
-    '/images/model/2024-08-24_17-07-59.png',
-    '/images/model/2024-08-24_17-09-12.png',
-    '/images/model/2024-08-24_17-10-09.png',
-    '/images/model/2024-08-24_17-11-01.png',
-    '/images/model/2024-08-24_17-11-55.png',
-    '/images/model/2024-08-24_17-12-43.png',
-    '/images/model/2024-08-24_17-14-25.png',
-    '/images/model/2024-08-24_17-15-44.png',
-    '/images/model/2024-08-24_17-16-55.png',
-    '/images/model/2024-08-24_17-17-52.png',
-    '/images/model/2024-08-24_17-18-56.png',
-    '/images/model/2024-08-24_17-23-50.png',
-    '/images/model/2024-08-24_17-25-29.png',
-    '/images/model/2024-08-24_17-24-35.png',
-    '/images/model/2024-08-24_17-26-39.png'
-  ];
+  const images = Array.from({ length: 55 }, (_, i) => `/building/1 (${i + 1}).webp`);
 
   return (
     <div>

@@ -73,7 +73,7 @@ export const Header = () => {
             <Link className="hover:text-secondary transition-colors duration-300" href={"/"}>
               About
             </Link>
-            <Link className="hover:text-secondary transition-colors duration-300" href={"/"}>
+            <Link className="hover:text-secondary transition-colors duration-300" href={"/building"}>
               Projects
             </Link>
             <Link className="hover:text-secondary transition-colors duration-300" href={"/"}>
