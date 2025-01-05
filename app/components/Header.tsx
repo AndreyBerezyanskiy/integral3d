@@ -61,7 +61,7 @@ export const Header = () => {
 
   return (
     <header className="fixed top-0 z-50 w-full overflow-hidden">
-      <div className="relative">
+      <div className="relative bg-gradient-to-b from-white to-transparent transition-all duration-300">
         {!navHide && (
           <animated.nav
             style={navAnimation}
