@@ -19,7 +19,7 @@ const Image360Viewer = () => {
   );
 
   const [currentFrame, setCurrentFrame] = useState(1);
-  const [images, setImages] = useState([]);
+const [images, setImages] = useState<HTMLImageElement[]>([]);
   const [tooltip, setTooltip] = useState(null);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
 
@@ -29,7 +29,7 @@ const Image360Viewer = () => {
         imagePaths.map((path) => {
           const img = new Image();
           img.src = path;
-          return new Promise((resolve) => {
+          return new Promise<HTMLImageElement>((resolve) => {
             img.onload = () => resolve(img);
           });
         })
@@ -40,17 +40,18 @@ const Image360Viewer = () => {
     loadImages();
   }, []);
 
-  const getNextKeyFrame = (current, direction) => {
-    const currentIndex = keyFrames.findIndex((frame) => frame === current);
+  const getNextKeyFrame = (current: number, direction: 'forward' | 'backward'): number => {
+  const currentIndex = keyFrames.findIndex((frame) => frame === current);
 
-    if (direction === 'forward') {
-      return keyFrames[(currentIndex + 1) % keyFrames.length];
-    } else {
-      return keyFrames[(currentIndex - 1 + keyFrames.length) % keyFrames.length];
-    }
-  };
+  if (direction === 'forward') {
+    return keyFrames[(currentIndex + 1) % keyFrames.length];
+  } else {
+    return keyFrames[(currentIndex - 1 + keyFrames.length) % keyFrames.length];
+  }
+};
 
-  const animateToKeyFrame = (targetFrame) => {
+
+  const animateToKeyFrame = (targetFrame: number) => {
     const forwardDistance =
       targetFrame > currentFrame
         ? targetFrame - currentFrame
@@ -80,20 +81,20 @@ const Image360Viewer = () => {
     }, 30);
   };
 
-  const handleButtonClick = (direction) => {
+  const handleButtonClick = (direction: "forward" | "backward") => {
     const nextKeyFrame = getNextKeyFrame(currentFrame, direction);
     animateToKeyFrame(nextKeyFrame);
   };
 
   // Handle mouse movement
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: React.MouseEvent) => {
     setCursorPosition({ x: e.clientX, y: e.clientY });
   };
 
   // Handle mouse enter zone
-  const handleMouseEnter = (zoneInfo) => {
-    setTooltip(zoneInfo);
-  };
+  // const handleMouseEnter = (zoneInfo) => {
+  //   setTooltip(zoneInfo);
+  // };
 
   // Handle mouse leave zone
   const handleMouseLeave = () => {
@@ -120,7 +121,7 @@ const Image360Viewer = () => {
       </div>
 
       {/* Add clickable zones wrapped in Link */}
-      <Link href="/apartment">
+      {/* <Link href="/apartment">
         <svg
   className="absolute"
   style={{
@@ -145,7 +146,7 @@ const Image360Viewer = () => {
     onMouseLeave={handleMouseLeave}
   />
 </svg>
-      </Link>
+      </Link> */}
 
       {/* Tooltip for showing zone info */}
       {/* {tooltip && (

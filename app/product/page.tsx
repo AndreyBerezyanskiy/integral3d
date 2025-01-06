@@ -62,11 +62,11 @@ const ImageViewer = ({ images }: { images: string[] }) => {
   };
 
   // Завершення анімації після того, як зображення змінене
-  useEffect(() => {
-    if (isAnimating) {
-      setTimeout(() => setIsAnimating(false), 300); // Очікуємо на анімацію 300ms
-    }
-  }, [currentImageIndex, isAnimating]);
+  // useEffect(() => {
+  //   if (isAnimating) {
+  //     setTimeout(() => setIsAnimating(false), 300); // Очікуємо на анімацію 300ms
+  //   }
+  // }, [currentImageIndex, isAnimating]);
 
   return (
     <div

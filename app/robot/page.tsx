@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-// import { useTexture, OrbitControls } from "@react-three/drei";
+import { useTexture, OrbitControls } from "@react-three/drei";
 import { Mesh } from "three";
 
 // Компонент для фонового шару з текстурою

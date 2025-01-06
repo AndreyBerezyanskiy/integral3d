@@ -5,9 +5,9 @@ import Link from "next/link";
 
 export const Apartment_1 = () => {
     const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
-    const [tooltip, setTooltip] = useState(null)
+    const [tooltip, setTooltip] = useState(false)
 
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: React.MouseEvent) => {
     setCursorPosition({ x: e.clientX, y: e.clientY });
   };
 
