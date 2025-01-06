@@ -148,7 +148,7 @@ const Image360Viewer = () => {
       </Link>
 
       {/* Tooltip for showing zone info */}
-      {tooltip && (
+      {/* {tooltip && (
         <div
           className="absolute bg-gray-100 text-black p-4 shadow-md"
           style={{
@@ -169,7 +169,7 @@ const Image360Viewer = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
       <div className="absolute top-1/2 -translate-y-1/2 w-full px-6 flex justify-between">
         <button
