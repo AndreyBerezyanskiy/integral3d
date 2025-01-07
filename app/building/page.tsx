@@ -6,7 +6,7 @@ import { Apartment_1 } from '../components/Apartment_1';
 
 const Image360Viewer = () => {
   const TOTAL_IMAGES = 200;
-  const keyFrames = [1, 55, 100, 150];
+  const keyFrames = [1, 55, 99, 159];
   const imagePaths = Array.from(
     { length: TOTAL_IMAGES },
     (_, i) => {
@@ -172,20 +172,18 @@ const [images, setImages] = useState<HTMLImageElement[]>([]);
         </div>
       )} */}
 
-      <div className="absolute top-1/2 -translate-y-1/2 w-full px-6 flex justify-between">
         <button
           onClick={() => handleButtonClick('backward')}
-          className="w-16 h-16 bg-gray-500 text-white font-bold rounded-full shadow-md hover:bg-red-500 transition-colors duration-150"
+          className="absolute z-20 top-1/2 -translate-y-1/2 left-6 px-6 w-16 h-16 bg-gray-500 text-white font-bold rounded-full shadow-md hover:bg-red-500 transition-colors duration-150"
         >
           &larr;
         </button>
         <button
           onClick={() => handleButtonClick('forward')}
-          className="w-16 h-16 bg-gray-500 text-white font-bold rounded-full shadow-md hover:bg-red-500 transition-colors duration-150"
+          className="absolute z-20 top-1/2 -translate-y-1/2 right-6 px-6 w-16 h-16 bg-gray-500 text-white font-bold rounded-full shadow-md hover:bg-red-500 transition-colors duration-150"
         >
           &rarr;
         </button>
-      </div>
     </div>
   );
 };
